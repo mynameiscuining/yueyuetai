@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YueYueTai</title>
+    <link href="/css/index.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/bootstrap3/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<style>
+    .operate {
+        float: right;
+        margin-right: 6px;
+    }
+
+    .icon {
+        width: 7px;
+        height: 7px;
+        margin: 0px 1px;
+        opacity: 0.6;
+    }
+
+    .icon:hover {
+        opacity: 1;
+    }
+
+    .icon:active {
+        opacity: 0.3;
+    }
+
+
+    .tag-title {
+        display: block;
+        width: 100%;
+    }
+
+    .switchstatus {
+        transform: rotate(90deg);
+        ms-transform: rotate(90deg); /* IE 9 */
+        moz-transform: rotate(90deg); /* Firefox */
+        webkit-transform: rotate(90deg); /* Safari and Chrome */
+        o-transform: rotate(90deg);
+    }
+
+    #more-panel {
+        background-color: white;
+        position: absolute;
+        z-index: 3;
+        display: none;
+        opacity: 1;
+    }
+
+    .more-panel-ul {
+        width: 90px;
+        list-style: none;
+        padding: 3px 0px;
+        font-size: 7px;
+        margin: 0px;
+        opacity: 0.7;
+    }
+
+    .more-items {
+        width: 9px;
+        height: 9px;
+        margin-right: 4px;
+    }
+
+    .more-panel-ul > li:hover, .dropdown-menu > li:hover {
+        background-color: #169af3;
+    }
+</style>
+<script type="text/javascript" src="/lib/jquery/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/lib/bootstrap3/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        //下拉按钮
+        $(".dropdown-toggle").dropdown()
+        //做数据项切换
+        $(".tag-title").click(function () {
+            $(this).next().slideToggle();
+            if ($(this).find(".tag").hasClass("switchstatus")) {
+                $(this).find(".tag").removeClass("switchstatus");
+            } else {
+                $(this).find(".tag").addClass("switchstatus");
+            }
+            $(this).parent().parent().siblings().find(".ul-father").find("ul").slideUp();
+            $(this).parent().parent().siblings().find(".tag").removeClass("switchstatus");
+        })
+
+        //
+        $(document).click(function (e) {
+            e = window.event || e; // 兼容IE7
+            var obj = $(e.srcElement || e.target);
+            if (!$(obj).is(".more-icon")) {
+                $("#more-panel").hide();
+            }
+        });
+
+        //滚动
+        // $(".left").scroll(function () {
+        //     if($("ul-father").find(".switchstatus"))
+        // })
+    })
+
+    function more(event) {
+        var e = event || window.event;
+        $("#more-panel").css({'top': e.clientY + "px", 'left': e.clientX + "px"})
+        $("#more-panel").show();
+    }
+
+
+</script>
+<body>
+<div class="container-background">
+    <div class="header">
+        <nav style="border: 0px; min-height: 28px;background-color: rgb(248,248,248,0.1);"
+             class="navbar navbar-default">
+            <div class="container-fluid">
+                <a style="height: auto;font-size: 8px;padding: 4px 18px;" class="navbar-brand"
+                   href="javascript:void(0)">登录|注册</a>
+                <div style="width: 200px; margin-left: 195px;padding-top: 4px;" class="input-group">
+                    <input style="height: 16px;font-size: 8px;" type="text" class="form-control">
+                    <span class="input-group-btn">
+                          <button title="搜索" style="padding: 0px 4px;font-size: 10px;"
+                                  class="btn btn-default" type="button">
+                              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                          </button>
+                    </span>
+                </div>
+                <span style="font-size: 10px;margin-right:0px;margin-top: -15px;" class="nav navbar-nav navbar-right">
+                <a title="设置" style="border: 0px;font-size: unset; padding: 0px 2px;background-color: transparent;"
+                   type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </a>
+                <ul style="border: 0px;border-radius:0px ;top: auto;margin: 0px;font-size: 7px;min-width: 90px;padding: 0px"
+                    class="dropdown-menu">
+                    <li><a href="#"><img style="width: 8px;height: 8px;margin-right: 2px" src="image/logout.png"/>注销</a></li>
+                    <li style="margin: 1px ;" role="separator" class="divider"></li>
+                    <li><a href="#"><img style="width: 8px;height: 8px;margin-right: 2px" src="image/skin.png"/> 皮肤</a></li>
+                </ul>
+
+                </span>
+            </div>
+        </nav>
+
+    </div>
+    <div class="body">
+        <div class="left">
+            <ul style="list-style: none; padding: 0px;">
+                <li>
+                    <span class="ul-father"><span class="tag-title"><img class="tag switchstatus"
+                                                                         src="image/more-master.png"/>标签</span>
+                    <ul style="display: block" class="tag-group">
+                        <!--                navbar-fixed-top-->
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate">
+                                <img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" onclick="more()" src="/image/more.png"/>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    </ul></span>
+
+                </li>
+                <li>
+                    <span class="ul-father"><span class="tag-title"><img class="tag"
+                                                                         src="image/more-master.png"/>标签</span>
+                    <ul class="tag-group">
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    </ul></span>
+
+                </li>
+                <li><span class="ul-father"><span class="tag-title"><img class="tag"
+                                                                         src="image/more-master.png"/>标签</span>
+                <ul class=" tag-group">
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                    <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon more-icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" src="/image/more.png"/></div>
+                        </li>
+                        <li>
+                            <div class="tag-item">数据1----------数据1数据1数据1数据1数据1数据1数据1数据1</div>
+                            <div class="operate"><img title="标记喜欢" class="icon" src="/image/like.png"/>
+                                <img title="移除" class="icon" src="/image/del.png"/>
+                                <img title="更多" class="icon more-icon" onclick="more()" src="/image/more.png"/></div>
+                        </li>
+                    </ul></span>
+
+                </li>
+            </ul>
+        </div>
+        <div class="content">内容</div>
+    </div>
+    <div class="play">
+        播放器
+    </div>
+
+</div>
+
+
+<div id="more-panel">
+    <ul class="more-panel-ul">
+        <li><span style="display: block;padding: 0px 8px;margin-top: 1px"><img class="more-items" src="image/play.png"/>播放</span>
+        </li>
+        <li><span style="display: block;padding: 0px 8px;margin-top: 1px"><img class="more-items"
+                                                                               src="image/download.png"/>下载</span></li>
+        <li><span style="display: block;padding: 0px 9px;margin-top: 1px;margin-bottom: 1px"><img
+                style="width: 7px;height: 7px" class="more-items"
+                src="image/share.png"/>分享地址</span></li>
+    </ul>
+</div>
+</body>
+</html>

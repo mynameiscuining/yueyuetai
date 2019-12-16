@@ -1,0 +1,109 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+
+.container-background {
+    background-image: url("/image/liqin2.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    width: 100%;
+    height: 28px;
+}
+
+.body {
+    width: 100%;
+    height: 82%;
+}
+
+.left {
+    padding-top: 1px;
+    background-color: rgb(248, 248, 248, 0.2);
+    float: left;
+    height: 100%;
+    width: 22%;
+    overflow-y: overlay;
+}
+
+.left::-webkit-scrollbar { /*滚动条整体样式*/
+    width: 4px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+
+.left::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    background: rgb(158, 159, 159, 0.3);
+}
+
+.left::-webkit-scrollbar-track { /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    background: rgb(248, 248, 248, 0.2);
+}
+
+.content {
+    float: left;
+    height: 100%;
+    width: 78%;
+}
+
+.play {
+    width: 100%;
+    height: 32px;
+}
+
+.left > ul {
+    margin-bottom: 0px;
+}
+
+.tag-group {
+    display: none;
+    list-style: none;
+    padding: 0px;
+    font-size: 8px;
+    font-weight: bolder;
+}
+
+.tag-group > li {
+    font-size: 7px;
+    font-weight: lighter;
+    padding: 3px 1px 3px 13px;
+    overflow-x: hidden;
+}
+
+.tag-item {
+    white-space: nowrap;
+    font-weight: lighter;
+    width: 100px;
+    overflow-x: hidden;
+    float: left;
+    opacity: 0.9;
+}
+
+.ul-father {
+    font-size: 8px;
+    font-weight: bolder;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    display: block;
+    padding: 2px 0px;
+    margin-bottom: -1px;
+}
+
+.tag {
+    width: 6px;
+    height: 6px;
+    margin-right: 2px;
+    margin-left: 5px;
+}
