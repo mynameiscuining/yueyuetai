@@ -1,0 +1,353 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <% include("/meta.html"){} %>
+    <title>用户管理</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>
+    首页<span class="c-gray en">/</span>用户管理
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+       href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号:</label>
+            <div class="layui-input-block">
+                <input id="username" style="width: 435px" type="text" autocomplete="off" placeholder="账号"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">状态:</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="" title="全部" checked/>
+                    <input type="radio" name="status" value="0" title="正常"/>
+                    <input type="radio" name="status" value="1" title="暂停"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">锁定:</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="locked" value="" title="全部" checked/>
+                    <input type="radio" name="locked" value="0" title="未锁定"/>
+                    <input type="radio" name="locked" value="1" title="锁定"/>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <button id="submit" style="width: 120px;" type="button" class="layui-btn layui-btn-normal"><i
+                            class="icon Hui-iconfont">&#xe665;</i> 查询
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div  style="margin-top: 0px" class="mt-20">
+        <table id="user" lay-filter="usertable"></table>
+    </div>
+</div>
+<script type="text/html" id="tablebar">
+    <% if(isNotEmpty(tabletoolbars)){
+    for(p in tabletoolbars ) {%>
+    <button style="width:80px" type="button " lay-event="${p.id}" class="layui-btn layui-btn-sm ${p.backcolor}">
+        <i class="icon Hui-iconfont">${p.icon!''}</i> ${p.operatename}
+    </button>
+    <% }
+    } %>
+</script>
+<script type="text/html" id="rowtoolbar">
+    <% if(isNotEmpty(rowtoolbars)){
+    for(p in rowtoolbars ) {
+    if(p.id==28){ %>
+    <button style="margin-left:-2px;" type="button " lay-event="${p.id}" class="layui-btn layui-btn-xs ${p.backcolor}">
+        {{# if(d.locked==0){ }}
+        <i class="icon Hui-iconfont">&#xe60e;</i>锁定
+        {{# }else{ }}
+        <i class="icon Hui-iconfont">&#xe605;</i>解锁
+        {{# } }}
+    </button>
+    <% }else if(p.id==27){ %>
+    <button style="margin-left:-2px;" type="button " lay-event="${p.id}" class="layui-btn layui-btn-xs ${p.backcolor}">
+        {{# if(d.status==0){ }}
+        <i class="icon Hui-iconfont">&#xe631;</i>关闭
+        {{# }else{ }}
+        <i class="icon Hui-iconfont">&#xe615;</i>开启
+        {{# } }}
+    </button>
+    <% }else{ %>
+    <button style="margin-left:-2px;" type="button " lay-event="${p.id}" class="layui-btn layui-btn-xs ${p.backcolor}">
+        <i class="icon Hui-iconfont">${p.icon!''}</i> ${p.operatename}
+    </button>
+    <% }
+    } elsefor{
+    print('无操作权限!');
+    }
+    }else{
+    print('无操作权限!');
+    }%>
+</script>
+<% include("/footer.html"){} %>
+<script type="text/javascript">
+    var form = layui.form;
+    var table = layui.table;
+    var layer = layui.layer;
+    var transfer = layui.transfer;
+
+    function tablerender() {
+        table.render({
+            elem: '#user',
+            url: "/userinfo/list",
+            toolbar: '#tablebar',
+            defaultToolbar: false,
+            even: false,
+            size:"sm",
+            where: {
+                username: $("#username").val(),
+                status: $('input[name="status"]:checked').val(),
+                locked: $('input[name="locked"]:checked').val()
+            },
+            page: true,
+            cols:
+                [[
+                    {field: 'username', title: '账号'},
+                    {
+                        field: 'status', title: '启用状态', align: 'center', templet: function (d) {
+                            if (d.status == 0) {
+                                return "正常";
+                            } else {
+                                return "暂停";
+                            }
+                        }
+                    },
+                    {
+                        field: 'locked', title: '锁定状态', align: 'center', templet: function (d) {
+                            if (d.locked == 0) {
+                                return "未锁定";
+                            } else {
+                                return "锁定";
+                            }
+                        }
+                    },
+                    {
+                        title: '操作', align: 'center', toolbar: '#rowtoolbar', width: 310
+                    }
+                ]]
+        })
+        ;
+        $("button[lay-event='24']").click(function () {
+            addUser();
+        })
+    }
+
+    tablerender();
+    $("#submit").click(function () {
+        reload();
+    });
+
+    function reload() {
+        table.reload("user", {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                username: $("#username").val(),
+                status: $('input[name="status"]:checked').val(),
+                locked: $('input[name="locked"]:checked').val()
+            }
+        });
+    }
+
+    //实践监听
+    table.on('tool(usertable)', function (obj) {
+        var layEvent = obj.event;
+        var data = obj.data;
+        if (layEvent == 27) {
+            modifyStatus(data);
+        } else if (layEvent == 28) {
+            modifyLock(data);
+        } else if (layEvent == 26) {
+            resetpwd(data);
+        } else if (layEvent == 25) {
+            deleteuser(data);
+        } else if (layEvent == 49) {
+            grant(data)
+        }
+    })
+    var role = undefined;
+
+    function grant(data) {
+        $.ajax({
+            url: "/userinfo/page/grant",
+            type: 'GET',
+            success: function (res) {
+                layer.open({
+                    title: "用户授权",
+                    btnAlign: 'l',
+                    type: 1,
+                    skin: 'layui-layer-lan',
+                    content: res,
+                    scrollbar: false,
+                    area: ['600px', '510px'],
+                    success: function (layero, index) {
+                        add_index = index;
+                        $("#user_id").val(data.id);
+                        $.ajax({
+                            url: "/userinfo/select/role/" + data.id,
+                            type: 'GET',
+                            success: function (ress) {
+                                role = transfer.render({
+                                    elem: '#roles',
+                                    title: ['未分配角色', '分配角色'],
+                                    data: ress.data,
+                                    height: 320,
+                                    value: ress.select
+                                })
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                            }
+                        });
+                    }
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+    }
+
+    //重置密码
+    function deleteuser(data) {
+        layer.confirm("确认删除用户?", {icon: 3}, function (index) {
+            layer.close(index);
+            $.ajax({
+                url: "/userinfo/delete/" + data.id,
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == 0) {
+                        reload();
+                        layer.alert(res.msg, {icon: 1});
+                    } else {
+                        layer.alert(res.msg, {icon: 2});
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                }
+            });
+        })
+    }
+
+    //重置密码
+    function resetpwd(data) {
+        layer.confirm("确认重置密码?", {icon: 3}, function (index) {
+            layer.close(index);
+            $.ajax({
+                url: "/userinfo/resetpwd",
+                data: {
+                    id: data.id
+                },
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == 0) {
+                        layer.alert(res.msg, {icon: 1});
+                    } else {
+                        layer.alert(res.msg, {icon: 2});
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                }
+            });
+        })
+    }
+
+    //锁定
+    function modifyLock(data) {
+        layer.confirm((data.locked == 0) ? "确认锁定用户?" : "确认解锁用户?", {icon: 3}, function (index) {
+            layer.close(index);
+            $.ajax({
+                url: "/userinfo/lock",
+                data: {
+                    id: data.id,
+                    locked: data.locked == 0 ? 1 : 0
+                },
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == 0) {
+                        reload();
+                        layer.alert(res.msg, {icon: 1});
+                    } else {
+                        layer.alert(res.msg, {icon: 2});
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                }
+            });
+        })
+    }
+
+    //状态
+    function modifyStatus(data) {
+        layer.confirm((data.status == 0) ? "确认关闭用户?" : "确认开启用户?", {icon: 3}, function (index) {
+            layer.close(index);
+            $.ajax({
+                url: "/userinfo/status",
+                data: {
+                    id: data.id,
+                    status: data.status == 0 ? 1 : 0
+                },
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == 0) {
+                        reload();
+                        layer.alert(res.msg, {icon: 1});
+                    } else {
+                        layer.alert(res.msg, {icon: 2});
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                }
+            });
+        })
+    }
+
+    //用户添加
+    var add_index = undefined;
+
+    function addUser() {
+        $.ajax({
+            url: "/userinfo/page/add",
+            type: 'GET',
+            success: function (res) {
+                layer.open({
+                    title: "用户添加",
+                    btnAlign: 'l',
+                    type: 1,
+                    skin: 'layui-layer-lan',
+                    content: res,
+                    scrollbar: false,
+                    area: ['550px', '355px'],
+                    success: function (layero, index) {
+                        add_index = index;
+                    }
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+    }
+
+    function colseAdd() {
+        layer.close(add_index);
+        add_index = undefined;
+    }
+
+</script>
+</body>
+</html>

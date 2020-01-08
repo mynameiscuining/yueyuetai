@@ -1,0 +1,23 @@
+<script type="text/html" id="${tabletoolbar!'tabletoolbar'}">
+    <% if(isNotEmpty(tabletoolbars)){
+    for(p in tabletoolbars ) {%>
+    <button  style="width:80px" type="button " lay-event="${p.id}" class="layui-btn layui-btn-sm ${p.backcolor}">
+        <i class="icon Hui-iconfont">${p.icon!''}</i>  ${p.operatename}
+    </button>
+    <% }
+    } %>
+</script>
+
+<script type="text/html" id="${rowtoolbar!'rowtoolbar'}">
+    <% if(isNotEmpty(rowtoolbars)){
+    for(p in rowtoolbars ) {%>
+    <button style="margin-left:-2px;" type="button " lay-event="${p.id}" class="layui-btn  layui-btn-xs ${p.backcolor}">
+        <i class="icon Hui-iconfont">${p.icon!''}</i>${p.operatename}
+    </button>
+    <%} elsefor{
+    print('无操作权限!');
+    }
+    }else{
+    print('无操作权限!');
+    }%>
+</script>

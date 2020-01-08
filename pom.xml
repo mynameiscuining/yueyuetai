@@ -11,6 +11,7 @@
     <modules>
         <module>yueyuetai-client</module>
         <module>yueyuetai-management</module>
+        <module>mybayis-generator</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -85,6 +86,8 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.0</version>
         </dependency>
+
+
 
     </dependencies>
     <build>

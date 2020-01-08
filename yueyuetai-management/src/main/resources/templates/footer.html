@@ -1,0 +1,21 @@
+<script type="text/javascript" src="${ctxPath }/js/lib/jquery/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="${ctxPath }/js/lib/layui/layui.all.js"></script>
+<script type="text/javascript" src="${ctxPath }/js/h_ui/H-ui.min.js"></script>
+<script type="text/javascript" src="${ctxPath }/js/h_ui/H-ui.admin.js"></script>
+<script type="text/javascript">
+    var errorjson = {404: "无法找到地址", 405: "请求地址方法不匹配", 403: "无权限进行访问", 500: "服务器异常",}
+
+    function errorMsg(XMLHttpRequest, textStatus, errorThrown) {
+        debugger;
+        if (XMLHttpRequest.status != 200 || XMLHttpRequest.readyState != 4) {
+            if (XMLHttpRequest.status == 404 || XMLHttpRequest.status == 405 || XMLHttpRequest.status == 403 || XMLHttpRequest.status == 500) {
+                layer.alert(errorjson[XMLHttpRequest.status], {icon: 2});
+            } else if (XMLHttpRequest.status == 401) {
+                window.location.href = "/"
+            } else
+                layer.alert("网络链接异常!", {icon: 2});
+        }
+
+    }
+
+</script>

@@ -1,0 +1,98 @@
+﻿<div class="page-container">
+    <form class="layui-form" onsubmit="return false">
+        <div style="margin-left: 40px;" class="layui-form-item">
+            <label class="layui-form-label">字典编号<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input value="${dictionary.serialNumber!''}" name="serialNumber" lay-verify="required"
+                       style="width: 248px"
+                       type="number"
+                       ${action=='modify'?'readonly':''}
+                       autocomplete="off"
+                       placeholder="字典编号"
+                       class="layui-input">
+            </div>
+        </div>
+        <div style="margin-left: 40px;" class="layui-form-item">
+            <label class="layui-form-label">字典名称<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input value="${dictionary.name!''}" name="name" lay-verify="required" style="width: 248px" type="text"
+                       autocomplete="off"
+                       placeholder="字典名称"
+                       class="layui-input">
+            </div>
+        </div>
+        <div style="margin-left: 40px;" class="layui-form-item">
+            <label class="layui-form-label">数据项编号<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input value="${dictionary.paramno!''}" name="paramno" lay-verify="required"
+                       style="width: 248px"
+                       type="number"
+                       ${action=='modify'?'readonly':''}
+                       autocomplete="off"
+                       placeholder="数据项编号"
+                       class="layui-input">
+            </div>
+        </div>
+        <div style="margin-left: 40px;" class="layui-form-item">
+            <label class="layui-form-label">数据项名称<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input value="${dictionary.paramname!''}" name="paramname" lay-verify="required" style="width: 248px"
+                       type="text"
+                       autocomplete="off"
+                       placeholder="数据项名称"
+                       class="layui-input">
+            </div>
+        </div>
+        <div style="margin-left: 40px;" class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <button id="dictionarysubmit" style="width: 100px;" lay-submit lay-filter="dictionarysubmit"
+                            class="layui-btn layui-btn-normal"><i
+                            class="icon Hui-iconfont">&#xe6e1;</i> 提交
+                    </button>
+                    <button style="width: 100px;" onclick="colseAdd()"
+                            class="layui-btn layui-btn-primary"><i
+                            class="icon Hui-iconfont">&#xe6dd;</i> 取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var form = layui.form;
+    form.render();
+
+    form.on('submit(dictionarysubmit)', function (data) {
+        debugger;
+        $("#dictionarysubmit").attr("disabled", true);
+        $.ajax({
+            url: "/dictionary/${action}",
+            data: data.field,
+            type: 'POST',
+            success: function (res) {
+                if (res.status == 0) {
+                    layer.alert(res.msg, {icon: 1}, function (index) {
+                        layer.close(index);
+                        setTimeout(function () {
+                            colseAdd();
+                            reload();
+                        }, 500)
+                    });
+
+                } else {
+                    $("#dictionarysubmit").removeAttr("disabled");
+                    layer.alert(res.msg, {icon: 2});
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#dictionarysubmit").removeAttr("disabled");
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+        return false;
+    })
+</script>
+</body>
+</body>
+</html>

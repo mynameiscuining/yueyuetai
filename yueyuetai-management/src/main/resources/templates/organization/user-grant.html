@@ -1,0 +1,77 @@
+<div class="page-container">
+    <form class="layui-form" onsubmit="return false">
+        <div style="overflow-y: overlay;height: 350px;text-align: center" class="layui-form-item">
+            <input id="user_id" type="hidden"/>
+            <div id="roles"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div style="margin-left: 175px;" class="layui-input-block">
+                    <button id="rolegrant" style="width: 100px;" lay-submit lay-filter="rolegrant"
+                            class="layui-btn layui-btn-normal"><i
+                            class="icon Hui-iconfont">&#xe6e1;</i> 提交
+                    </button>
+                    <button style="width: 100px;" onclick="colseAdd()"
+                            class="layui-btn layui-btn-primary"><i
+                            class="icon Hui-iconfont">&#xe6dd;</i> 取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var form = layui.form;
+    form.render();
+
+    form.on('submit(rolegrant)', function (data) {
+        debugger;
+        var checkData = role.getData('roles');
+        var list = getselect(checkData);
+
+        $("#rolegrant").attr("disabled", true);
+        $.ajax({
+            url: "/userinfo/grant/" + $("#user_id").val(),
+            data: {
+                selectids: list
+            },
+            type: 'POST',
+            success: function (res) {
+                if (res.status == 0) {
+                    layer.alert(res.msg, {icon: 1}, function (index) {
+                        layer.close(index);
+                        setTimeout(function () {
+                            colseAdd();
+                        }, 500)
+                    });
+
+                } else {
+                    $("#rolegrant").removeAttr("disabled");
+                    layer.alert(res.msg, {icon: 2});
+                }
+            }
+
+            ,
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#rolegrant").removeAttr("disabled");
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        })
+        ;
+        return false;
+    })
+
+    function getselect(node) {
+        var selectIds = new Array();
+        if (node != undefined && node.length != 0) {
+            for (var i = 0; i < node.length; i++) {
+                selectIds.push(node[i].value);
+            }
+        }
+        return selectIds;
+    }
+</script>
+</body>
+</body>
+</html>

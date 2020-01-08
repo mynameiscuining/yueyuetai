@@ -1,0 +1,22 @@
+<aside class="Hui-aside">
+
+    <% for (permission in permissionVos){ %>
+    <div class="menu_dropdown bk_2">
+        <% for ( per in permission.permissionVos){ %>
+        <dl>
+            <dt><i class="icon Hui-iconfont">${per.icon!'&#xe681'}</i> ${per.name}<i
+                    class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <% for( p in per.permissionVos) {%>
+                    <li><a data-href="${p.url}" data-title="${p.name}" href="javascript:void(0)">${p.name}</a></li>
+                    <% }%>
+                </ul>
+            </dd>
+        </dl>
+        <%} %>
+    </div>
+    <% }%>
+</aside>
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>
+</div>

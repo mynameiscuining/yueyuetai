@@ -1,0 +1,390 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <% include("/meta.html"){} %>
+    <title>权限管理</title>
+    <style>
+        #left_tree {
+            background-color: #F5FAFE;
+            overflow-y: overlay;
+            float: left;
+            width: 300px;
+            height: 570px
+        }
+
+        #right_cocntent {
+            float: left;
+            margin-left: 5px;
+            height: 570px;
+            background-color: #F5FAFE;
+            width: 930px;
+        }
+
+        .tree-text {
+            background-color: #EBCAFE;
+        }
+
+        .layui-btn, .layui-input {
+            outline: 0;
+            -webkit-appearance: none;
+            transition: all;
+            -webkit-transition: all;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>
+    首页<span class="c-gray en">/</span>权限管理
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+       href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div style="height: 592px" class="page-container">
+    <div id="left_tree">
+        <div id="menutree"></div>
+    </div>
+    <div id="right_cocntent">
+        <div style="margin-top: 25px" class="layui-inline">
+            <div class="layui-input-block">
+                <button style="width: 80px" id="add" type="button " class="layui-btn layui-btn-sm layui-btn-normal">
+                    <i class="icon Hui-iconfont">&#xe600;</i> 新增
+                </button>
+            </div>
+        </div>
+        <form class="layui-form" lay-filter="permissionform" style="margin-top: 30px" onsubmit="return false">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">名称<span style="color: red">*</span>:</label>
+                    <div class="layui-input-block">
+                        <input name="name" lay-verify="required" style="width: 248px" type="text" autocomplete="off"
+                               placeholder="名称"
+                               class="layui-input">
+                        <input type="hidden" id="id" name="id"/>
+                    </div>
+                </div>
+                <div id="url_dispaly" class="layui-inline">
+                    <label class="layui-form-label">url:</label>
+                    <div class="layui-input-block">
+                        <input name="url" style="width: 248px" type="text" autocomplete="off"
+                               placeholder="url"
+                               class="layui-input">
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">菜单类型<span style="color: red">*</span>:</label>
+                    <div style="width: 246px;" class="layui-input-block">
+                        <select lay-filter="selecttype" name="type" lay-verify="required">
+                            <option value="">请选择类型</option>
+                            <% for( type in menuTypes) { %>
+                            <option value="${type.paramno}">${type.paramname}</option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">父级菜单<span style="color: red">*</span>:</label>
+                    <div class="layui-input-block">
+                        <input id="parentName" lay-verify="required" name="parentName" readonly="true"
+                               style="width: 248px" type="text"
+                               autocomplete="off"
+                               placeholder="点击选择父级菜单"
+                               class="layui-input">
+                        <input type="hidden" name="parentid" id="parentid"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <div id="icon_display" class="layui-inline">
+                    <label class="layui-form-label">图标:</label>
+                    <div class="layui-input-block">
+                        <input name="icon" style="width: 185px;display: inline" type="text"
+                               autocomplete="off"
+                               placeholder="icon"
+                               class="layui-input"> <a style="color: #0e90d2" target="_blank"
+                                                       href="/css/Hui-iconfont/demo.html">参考图标</a>
+                    </div>
+                </div>
+                <div id="color_display" style="width: 359px;" class="layui-inline">
+                    <label class="layui-form-label">按钮颜色:</label>
+                    <div class="layui-input-block">
+                        <select lay-filter="selectcolor" id="backcolor" name="backcolor">
+                            <option value="">默认</option>
+                            <option value="layui-btn-primary">原色
+                            </option>
+                            <option value="layui-btn-normal">百搭</option>
+                            <option value="layui-btn-warm">暖色</option>
+                            <option value="layui-btn-danger">警告</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">排序:</label>
+                    <div class="layui-input-block">
+                        <input name="sort" style="width: 248px" type="number" autocomplete="off"
+                               placeholder="排序号"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态:</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="available" value="0" title="启用" checked/>
+                        <input type="radio" name="available" value="1" title="禁用"/>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-block">
+                        <button id="permissionsubmit" style="width: 100px;" lay-submit lay-filter="permissionsubmit"
+                                class="layui-btn layui-btn-normal"><i
+                                class="icon Hui-iconfont">&#xe6e1;</i> 提交
+                        </button>
+                        <button style="width: 100px;" id="delete"
+                                class="layui-btn layui-btn-danger"><i
+                                class="icon Hui-iconfont">&#xe6e2;</i> 删除
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div style="margin-left: 30px;display: none" id="tree-select"></div>
+<% include("/footer.html"){} %>
+<script type="text/javascript">
+    var tree = layui.tree;
+    var form = layui.form;
+    var layer = layui.layer;
+    var treeSelect = layui.tree;
+    form.render();
+    $("#backcolor").next().find("input").css("background-color", "#009688");
+
+    function clear() {
+        typeSelect("");
+        form.val("permissionform", {
+            name: '',
+            id: '',
+            url: '',
+            type: '',
+            parentName: '',
+            parentid: '',
+            icon: '',
+            backcolor: '',
+            available: 0,
+            sort: 1
+        });
+        changeColor("", $("#backcolor").next());
+    }
+
+    $("#add").click(function () {
+        clear();
+    });
+    $("#delete").click(function () {
+        layer.confirm("确认删除?", {icon: 3}, function (index) {
+            layer.close(index);
+            if ($("#id").val() === "") {
+                clear();
+            } else {
+                $.ajax({
+                    url: "/permission/delete/" + $("#id").val(),
+                    type: "POST",
+                    success: function (res) {
+                        if (res.status == 0) {
+                            clear();
+                            menutree();
+                            layer.alert(res.msg, {icon: 1});
+                        } else {
+                            layer.alert(res.msg, {icon: 2});
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                    }
+
+                })
+            }
+        })
+
+    })
+
+    function menutree() {
+        $.ajax({
+            url: "/permission/list",
+            type: 'GET',
+            success: function (res) {
+                tree.render({
+                    elem: '#menutree',
+                    onlyIconControl: true,
+                    accordion: true,
+                    data: res,
+                    click: function (obj) {
+                        if (obj.data.id == 0) {
+                            return;
+                        }
+                        detail(obj);
+                    }
+                })
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+    }
+
+    function detail(obj) {
+        $.ajax({
+            url: "/permission/detail/" + obj.data.id,
+            type: 'GET',
+            success: function (res) {
+                if (res.status == 0) {
+                    form.val("permissionform", res.object);
+                    changeColor(res.object.backcolor, $("#backcolor").next());
+                    typeSelect(res.object.type);
+                } else {
+                    layer.alert(res.msg, {icon: 2});
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        })
+    }
+
+    menutree();
+
+    $("#parentName").click(function () {
+        var currentSelect = undefined;
+        layer.open({
+            title: "父级菜单选择",
+            btnAlign: 'l',
+            type: 1,
+            skin: 'layui-layer-lan',
+            content: $("#tree-select"),
+            scrollbar: false,
+            area: ['450px', '300px'],
+            btn: ['确认选择', '取消'],
+            yes: function (index, layero) {
+                if (currentSelect) {
+                    $("#parentid").val(currentSelect.id);
+                    $("#parentName").val(currentSelect.title.split('[')[0]);
+                    layer.close(index);
+                    currentSelect = undefined;
+                }
+
+            }, end: function () {
+                $("#tree-select").hide();
+            },
+            success: function (layero, index) {
+                $("#tree-select").show();
+                $(".layui-layer-btn0").css("background-color", "#1E9FFF");
+                $.ajax({
+                    url: "/permission/list",
+                    type: 'GET',
+                    success: function (res) {
+                        treeSelect.render({
+                            elem: '#tree-select',
+                            onlyIconControl: true,
+                            accordion: true,
+                            data: res,
+                            click: function (obj) {
+                                currentSelect = obj.data;
+                                $(".tree-text").removeClass("tree-text");
+                                obj.elem.find('.layui-tree-txt').first().addClass("tree-text");
+                            }
+                        })
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        errorMsg(XMLHttpRequest, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    });
+
+    function changeColor(value, othis) {
+        if (value == "layui-btn-normal") {
+            othis.find("input").css("background-color", "rgb(30, 159, 255)");
+        } else if (value == "layui-btn-primary") {
+            othis.find("input").css("background-color", "rgb(250, 250, 250)");
+        } else if (value == "" || value == null || value == undefined) {
+            othis.find("input").css("background-color", "#009688");
+        } else if (value == "layui-btn-warm") {
+            othis.find("input").css("background-color", "#FFB800");
+        } else {
+            othis.find("input").css("background-color", "#FF5722");
+        }
+    }
+
+    form.on('select(selectcolor)', function (data) {
+        changeColor(data.value, data.othis);
+    })
+
+    function typeSelect(value) {
+        if (value === 0) {
+            $("#url_dispaly").hide();
+            $("#color_display").hide();
+            $("#icon_display").hide();
+        } else if (value == 1) {
+            $("#url_dispaly").hide();
+            $("#color_display").hide();
+            $("#icon_display").show();
+        } else if (value == 10) {
+            $("#url_dispaly").show();
+            $("#color_display").hide();
+            $("#icon_display").hide();
+        } else {
+            $("#url_dispaly").show();
+            $("#color_display").show();
+            $("#icon_display").show();
+        }
+    }
+
+    form.on('select(selecttype)', function (data) {
+        typeSelect(data.value);
+    })
+
+    form.on('submit(permissionsubmit)', function (data) {
+        $("#permissionsubmit").attr("disabled", true);
+        var action = "add";
+        if ($("#id").val() === "") {
+            action = "add";
+        } else {
+            action = "modify";
+        }
+        $.ajax({
+            url: "/permission/" + action,
+            data: data.field,
+            type: 'POST',
+            success: function (res) {
+                $("#permissionsubmit").removeAttr("disabled");
+                if (res.status == 0) {
+                    layer.alert(res.msg, {icon: 1});
+                    form.val("permissionform", res.object);
+                    changeColor(res.object.backcolor, $("#backcolor").next());
+                    typeSelect(res.object.type);
+                    menutree();
+                } else {
+                    layer.alert(res.msg, {icon: 2});
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $("#permissionsubmit").removeAttr("disabled");
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+        return false;
+    })
+
+
+</script>
+</body>
+</html>
