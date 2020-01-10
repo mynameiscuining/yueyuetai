@@ -1,5 +1,6 @@
 package cn.njyazheng.configuration;
 
+import cn.njyazheng.controller.music.MusicViewerRegistry;
 import cn.njyazheng.controller.system.SysViewerRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -28,6 +29,7 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login.html");
         registry.addViewController("/welcome").setViewName("welcome.html");
         SysViewerRegistry.addViewControllers(registry);
+        MusicViewerRegistry.addViewControllers(registry);
     }
 
     @Override

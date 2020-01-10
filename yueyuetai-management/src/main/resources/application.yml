@@ -25,3 +25,13 @@ spring:
       ## 数据库连接超时时间,默认30秒，即30000
       connection-timeout: 30000
       connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+filepath:
+  base-path: F:/upload
+  base-url: http://localhost:7401
+  music-root: music
+  image-root: image
+  static-root:

@@ -2,20 +2,28 @@
 <html>
 <head>
     <% include("/meta.html"){} %>
-    <title>字典管理</title>
+    <title>音乐管理</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i>
-    首页<span class="c-gray en">/</span>字典管理
+    首页<span class="c-gray en">/</span>音乐管理
     <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
        href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <form class="layui-form" lay-filter="searchform" onsubmit="return false;">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">字典名称:</label>
+                <label class="layui-form-label">音乐名称:</label>
                 <div class="layui-input-block">
-                    <input id="name" name="name" style="width: 300px" type="text" autocomplete="off" placeholder="字典名称"
+                    <input id="name" name="name" style="width: 220px" type="text" autocomplete="off" placeholder="音乐名称"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">演唱者:</label>
+                <div class="layui-input-block">
+                    <input id="singer" name="singer" style="width: 220px" type="text" autocomplete="off"
+                           placeholder="演唱者"
                            class="layui-input">
                 </div>
             </div>
@@ -31,7 +39,7 @@
 
     </form>
     <div style="margin-top: 0px" class="mt-20">
-        <table id="dictionary" lay-filter="dictionarytable"></table>
+        <table id="music" lay-filter="musictable"></table>
     </div>
 </div>
 <% include("/toobar.html"){} %>
@@ -43,26 +51,27 @@
 
     function tablerender() {
         table.render({
-            elem: '#dictionary',
-            url: "/dictionary/list",
+            elem: '#music',
+            url: "/music/list",
             toolbar: '#tabletoolbar',
             defaultToolbar: false,
             even: false,
-            size:"sm",
+            size: "sm",
             where: form.val("searchform"),
             page: true,
             cols:
                 [[
-                    {field: 'serialNumber', title: '字典编号', align: 'center'},
-                    {field: 'name', title: '字典项'},
-                    {field: 'paramno', title: '数据项编号', align: "center"},
-                    {field: 'paramname', title: '数据项'},
-                    {title: '操作', align: 'center', toolbar: '#rowtoolbar', width: 150}
+                    {field: 'id', title: 'ID', align: 'center'},
+                    {field: 'name', title: '名称'},
+                    {field: 'filename', title: '上传文件名称'},
+                    {field: 'singer', title: '演唱者'},
+                    {field: 'uri', title: '文件地址'},
+                    {title: '操作', align: 'center', toolbar: '#rowtoolbar', width: 130}
                 ]]
         })
         ;
-        $("button[lay-event='6']").click(function () {
-            addDictionary("", "");
+        $("button[lay-event='12']").click(function () {
+            addMusic("");
         })
     }
 
@@ -72,36 +81,35 @@
     });
 
     function reload() {
-        table.reload("dictionary", {
+        table.reload("music", {
             page: {
                 curr: 1 //重新从第 1 页开始
             },
-            where: form.val("dictionarytable")
+            where: form.val("searchform")
         });
-        $("button[lay-event='6']").click(function () {
-            addDictionary("", "");
+        $("button[lay-event='12']").click(function () {
+            addMusic("");
         })
     }
 
     //实践监听
-    table.on('tool(dictionarytable)', function (obj) {
+    table.on('tool(musictable)', function (obj) {
         var layEvent = obj.event;
         var data = obj.data;
-        if (layEvent == 50) {
-            addDictionary(data.serialNumber, data.paramno)
-        } else if (layEvent == 51) {
-            deleteDictionary(data.serialNumber, data.paramno);
+        if (layEvent == 14) {
+            addMusic(data.id)
+        } else if (layEvent == 15) {
+            deleteMusic(data.id);
         }
     })
 
-    function deleteDictionary(serialNumber, paramno) {
-        layer.confirm("确认删除数据项?", {icon: 3}, function (index) {
+    function deleteMusic(id) {
+        layer.confirm("确认删除文件及数据?", {icon: 3}, function (index) {
             layer.close(index);
             $.ajax({
-                url: "/dictionary/delete",
+                url: "/music/delete",
                 data: {
-                    serialNumber: serialNumber,
-                    paramno: paramno
+                    id: id
                 },
                 type: 'POST',
                 success: function (res) {
@@ -123,18 +131,17 @@
     //用户添加
     var add_index = undefined;
 
-    function addDictionary(sid, pid) {
+    function addMusic(id) {
         var title = "";
         var reqparam = "";
-        if (sid === "" || pid === "") {
-
-            title = "字典数据项添加";
+        if (id === "") {
+            title = "音乐添加";
         } else {
-            reqparam = "/" + sid + "/" + pid;
-            title = "字典数据项修改";
+            reqparam = "/" + id;
+            title = "音乐修改";
         }
         $.ajax({
-            url: "/dictionary/page/add" + reqparam,
+            url: "/music/page/add" + reqparam,
             type: 'GET',
             success: function (res) {
                 layer.open({

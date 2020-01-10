@@ -6,12 +6,15 @@ public class OperatResult {
     private Integer status;
     private String msg;
     private Object object;
+
     public OperatResult() {
     }
+
     public OperatResult(Integer status, String msg) {
         this.status = status;
         this.msg = msg;
     }
+
 
     public OperatResult(Integer status, String msg, Object object) {
         this.status = status;
@@ -41,5 +44,29 @@ public class OperatResult {
 
     public void setObject(Object object) {
         this.object = object;
+    }
+
+    public static OperatResult modifySuccess() {
+        return new OperatResult(SUCCESS, "修改成功!");
+    }
+
+    public static OperatResult addSuccess() {
+        return new OperatResult(SUCCESS, "添加成功!");
+    }
+
+    public static OperatResult deleteSuccess() {
+        return new OperatResult(SUCCESS, "删除成功!");
+    }
+
+    public static OperatResult deleteFailure() {
+        return new OperatResult(ERROR, "删除失败!");
+    }
+
+    public static OperatResult addFailure() {
+        return new OperatResult(ERROR, "添加失败!");
+    }
+
+    public static OperatResult modifyFailure() {
+        return new OperatResult(ERROR, "修改失败!");
     }
 }

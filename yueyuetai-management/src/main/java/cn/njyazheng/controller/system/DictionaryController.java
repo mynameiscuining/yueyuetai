@@ -18,7 +18,7 @@ public class DictionaryController {
     private DataDictionaryService dataDictionaryService;
 
     @GetMapping("/list")
-    public PageResult<DataDictionary> getRoleList(DataDictionary dataDictionary, Pagination pagination) {
+    public PageResult<DataDictionary> getList(DataDictionary dataDictionary, Pagination pagination) {
         return dataDictionaryService.dataDictionaryPageResult(dataDictionary, pagination);
     }
 

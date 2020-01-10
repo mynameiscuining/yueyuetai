@@ -1,0 +1,120 @@
+<div class="page-container">
+    <form class="layui-form" onsubmit="return false">
+        <div class="layui-form-item">
+            <label class="layui-form-label">音乐名称<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input name="name" lay-verify="required" value="${music.name}" style="width: 248px" type="text"
+                       autocomplete="off"
+                       placeholder="音乐名称"
+                       class="layui-input"/>
+                <input type="hidden" id="id" value="${music.id}" name="id"/>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">演唱者<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+                <input name="singer" style="width: 248px" lay-verify="required" type="text"
+                       value="${music.singer}"
+                       placeholder="演唱者"
+                       class="layui-input"/>
+
+            </div>
+        </div>
+        <% if(action=='add'){ %>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传文件<span style="color: red">*</span>:</label>
+            <div class="layui-input-block">
+               <span class="btn-upload form-group">
+			<input class="input-text upload-url layui-input" lay-verify="required|ismusic" type="text" name="uploadfile"
+                   id="uploadfile" readonly
+                   style="width:200px;display: unset;height: 30px">
+			<a href="javascript:void(0);" class="btn btn-primary upload-btn"><i
+                    class="Hui-iconfont">&#xe642;</i> 上传音频</a>
+			<input type="file" id="file" name="file" class="input-file">
+			</span>
+            </div>
+        </div>
+        <% }else{ %>
+        <div class="layui-form-item">
+            <label class="layui-form-label">文件地址:</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" name="uri" value="${music.uri}" readonly/>
+            </div>
+        </div>
+        <% } %>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <button id="musicsubmit" style="width: 100px;" lay-submit lay-filter="musicsubmit"
+                            class="layui-btn layui-btn-normal"><i
+                            class="icon Hui-iconfont">&#xe6e1;</i> 提交
+                    </button>
+                    <button style="width: 100px;" onclick="colseAdd()"
+                            class="layui-btn layui-btn-primary"><i
+                            class="icon Hui-iconfont">&#xe6dd;</i> 取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    form.verify({
+        ismusic: function (value, item) {
+            debugger;
+            if (value != "") {
+                var type = value.split(".")[1];
+                if (type == "MP3" || type == "mp3" || type == "wav") {
+                } else {
+                    return "格式不符合要求!";
+                }
+            }
+        }
+    })
+    form.on('submit(musicsubmit)', function (data) {
+        debugger;
+        $("#musicsubmit").attr("disabled", true);
+        var msgindex = layer.msg("上传数据,请稍后...", {icon: 16, time: false, shade: 0.3})
+        var formData = new FormData();
+        formData.append("name", data.field.name);
+        formData.append("id", data.field.id);
+        formData.append("singer", data.field.singer);
+        if ($('#file')[0]) {
+            formData.append("file", $('#file')[0].files[0]);
+        }
+
+        $.ajax({
+            url: "/music/${action}",
+            data: formData,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function (res) {
+                layer.close(msgindex);
+                if (res.status == 0) {
+                    layer.alert(res.msg, {icon: 1}, function (index) {
+                        layer.close(index);
+                        setTimeout(function () {
+                            colseAdd();
+                            reload();
+                        }, 500)
+                    });
+
+                } else {
+                    $("#musicsubmit").removeAttr("disabled");
+                    layer.alert(res.msg, {icon: 2});
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.close(msgindex);
+                $("#musicsubmit").removeAttr("disabled");
+                errorMsg(XMLHttpRequest, textStatus, errorThrown);
+            }
+        });
+        return false;
+    })
+</script>
+</body>
+</body>
+</html>
